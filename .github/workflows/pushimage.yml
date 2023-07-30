@@ -33,5 +33,4 @@ jobs:
       - name: Build and tag Docker image
         run: docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO }}:latest .
           
-      - name: Push Docker image to ECR
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO }}:latest
+      

@@ -1,6 +1,8 @@
 name: Push Docker Image to AWS ECR
 
 on:
+  schedule:
+    - cron: '0 0 * * *'
   push:
     branches:
       - main 

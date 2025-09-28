@@ -23,7 +23,46 @@
 		}
 	};
 
-	
+	var contactForm = function() {
+		$('#contact-form').on('submit', function(event) {
+			event.preventDefault(); // prevent reload
+			
+			// Show loading state
+			var submitBtn = $(this).find('input[type="submit"]');
+			var originalText = submitBtn.val();
+			submitBtn.val('Sending...').prop('disabled', true);
+			
+			// Add current time to the form as a hidden field
+			var now = new Date();
+			var timeString = now.toLocaleString();
+			
+			// Create a hidden input for time if it doesn't exist
+			if (!$('#time').length) {
+				$(this).append('<input type="hidden" id="time" name="time">');
+			}
+			$('#time').val(timeString);
+			
+			// Combine first and last name
+			var fullName = $('#fname').val() + ' ' + $('#lname').val();
+			if (!$('#full_name').length) {
+				$(this).append('<input type="hidden" id="full_name" name="name">');
+			}
+			$('#full_name').val(fullName);
+			
+			// Send form using EmailJS
+			emailjs.sendForm('service_dc4p9ys', 'template_qojiyuh', this)
+				.then(function() {
+					alert('Your message has been sent successfully! I will get back to you soon.');
+					$('#contact-form')[0].reset(); // Reset form
+					submitBtn.val(originalText).prop('disabled', false);
+				}, function(error) {
+					alert('Oops... Failed to send message. Please try again or contact me directly at rohanrustagi21@gmail.com');
+					console.error('EmailJS Error:', error);
+					submitBtn.val(originalText).prop('disabled', false);
+				});
+		});
+	}; 
+
 	var fullHeight = function() {
 
 		if ( !isMobile.any() ) {
@@ -143,6 +182,7 @@
 		parallax();
 		// pieChart();
 		skillsWayPoint();
+		contactForm();
 	});
 
 
